@@ -267,19 +267,6 @@ This Python implementation produces results equivalent to the original MATLAB co
 
 If you use this code in your research, please cite:
 
-```bibtex
-@article{Dubajic2025,
-  title={Dynamic nanodomains dictate macroscopic properties in lead halide perovskites},
-  author={Dubajic, Milos and Sherrell, Peter C. and Sherrell, Peter C. and others},
-  journal={Nature Nanotechnology},
-  volume={20},
-  pages={755--763},
-  year={2025},
-  doi={10.1038/s41565-025-01917-0},
-  url={https://www.nature.com/articles/s41565-025-01917-0}
-}
-```
-
 **Full citation:** Dubajic, M. et al. Dynamic nanodomains dictate macroscopic properties in lead halide perovskites. *Nat. Nanotechnol.* **20**, 755–763 (2025). https://doi.org/10.1038/s41565-025-01917-0
 
 ## License
