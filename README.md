@@ -1,15 +1,15 @@
-# LocalOctaTilt - Python Implementation
+# LocalOctaTilt: Python implementation
 
 A Python implementation of the phenomenological model for simulating diffuse scattering arising from local octahedral tilting in lead halide perovskites.
 
 This code reproduces results from the publication:
-> **"Dynamic nanodomains dictate macroscopic properties in lead halide perovskites"**
+> "Dynamic nanodomains dictate macroscopic properties in lead halide perovskites"
 
 ## Overview
 
-This package simulates S(q) arising from local I4/mcm (P4/mbm) nanodomains in cubic perovskite structures. The model accounts for:
+The package simulates the scattered intensity S(q) arising from local I4/mcm or P4/mbm nanodomains in perovskites whose average structure is cubic. The model accounts for:
 
-- Local symmetry breaking from average cubic Pm-3m to tetragonal I4/mcm or P4/mbm
+- Local symmetry breaking from the average cubic Pm-3m structure to tetragonal I4/mcm or P4/mbm
 - Anisotropic broadening of superstructure reflections
 - Multiple twin domain orientations
 - Background scattering contributions
@@ -46,17 +46,17 @@ pip install -r requirements.txt
 | h5py | >= 3.0.0 | HDF5 file support for MD data |
 | scikit-image | >= 0.18.0 | Isosurface extraction |
 
-### Optional GPU Acceleration
+### Optional GPU acceleration
 
-For GPU-accelerated simulations (NVIDIA CUDA):
+For GPU-accelerated simulations (NVIDIA CUDA), install CuPy:
 
 ```bash
-pip install cupy>=10.0.0
+pip install "cupy>=10.0.0"
 ```
 
-## Quick Start
+## Quick start
 
-### Basic Simulation
+### Basic simulation
 
 ```python
 from local_octa_tilt import LocalSymmetrizedSimulation, two_d_slice, colormap_plot
@@ -96,7 +96,7 @@ colormap_plot(X, Y, Z_norm.T, ax=ax,
 plt.show()
 ```
 
-### Isosurface Visualization
+### Isosurface visualization
 
 ```python
 from local_octa_tilt import isosurface_plot
@@ -114,31 +114,31 @@ isosurface_plot(H, K, L, S, isovalue=6, c_val=1.75, ax=ax)
 plt.show()
 ```
 
-## Structure Factor Files
+## Structure factor files
 
-Structure factor files are generated using [SingleCrystal](https://crystalmaker.com/singlecrystal/) software. The files contain:
+The structure factor files are generated with [SingleCrystal](https://crystalmaker.com/singlecrystal/) and contain:
 
 - Miller indices (h, k, l)
 - d-spacing
-- Structure factor components (F_Re, F_Im)
+- Real and imaginary parts of the structure factor (F_Re, F_Im)
 - Phase angle
 - Structure factor magnitude |F|
 
-### Included Files
+### Included files
 
 | File | Phase | Material |
 |------|-------|----------|
 | `MAPbBr3_I4_mcm.txt` | I4/mcm | MAPbBr3 |
 | `FAPbBr3_P4_mbm_pseudocubic.txt` | P4/mbm | FAPbBr3 |
 
-### Creating Custom Structure Factor Files
+### Creating custom structure factor files
 
-1. Open SingleCrystal software
+1. Open SingleCrystal
 2. Load or create your crystal structure
-3. Calculate structure factors for desired hkl range
-4. Export as text file with the standard format
+3. Calculate structure factors for the desired hkl range
+4. Export them as a text file in the same standard format as the included files
 
-## API Reference
+## API reference
 
 ### LocalSymmetrizedSimulation
 
@@ -171,7 +171,7 @@ two_d_slice(
 
 ### colormap_plot
 
-Create 2D colormap visualizations.
+Plot a 2D intensity map.
 
 ```python
 colormap_plot(
@@ -185,7 +185,7 @@ colormap_plot(
 
 ### isosurface_plot
 
-Create 3D isosurface visualizations.
+Plot an isosurface of a 3D intensity array.
 
 ```python
 isosurface_plot(
@@ -197,9 +197,9 @@ isosurface_plot(
 )
 ```
 
-## Model Parameters
+## Model parameters
 
-The simulation uses 5 parameters described in equation S4 of the supplementary information:
+The simulation uses five parameters, described in equation S4 of the Supplementary Information. Note that the code argument `C` corresponds to B in equation S4, and `bgr` to C.
 
 | Parameter | Symbol | Description |
 |-----------|--------|-------------|
@@ -209,52 +209,52 @@ The simulation uses 5 parameters described in equation S4 of the supplementary i
 | bgr | C | Background level |
 | deltag | σ_bgr | Background Gaussian width |
 
-### Fitted Parameters for Reference Materials
+### Fitted parameters for reference materials
 
-**MAPbBr3 (DESY, 300K):**
+MAPbBr3 (DESY, 300 K):
 ```python
 params = [0.256412516, 0.078330761, 0.021337638, 15.22830278, 1.024027567]
 ```
 
-**FAPbBr3:**
+FAPbBr3:
 ```python
 params = [0.11428078, 0.075591433, 0.000539108, 1.135693401, 100.0685359]
 ```
 
 ## Examples
 
-See the `examples/` directory for complete example scripts:
+The `examples/` directory contains:
 
-- `simulation_qeds.py` - Full simulation workflow for MAPbBr3 and FAPbBr3
+- `simulation_qeds.py`: full simulation workflow for MAPbBr3 and FAPbBr3
 
 ## Performance
 
-### GPU vs CPU Benchmarks (GTX 1070)
+### GPU vs CPU benchmarks (GTX 1070)
 
-| Grid Size | CPU Time | GPU Time | Speedup |
+| Grid size | CPU time | GPU time | Speedup |
 |-----------|----------|----------|---------|
 | 21³ | 0.2s | 2.2s | 0.1x |
-| 61³ | 10s | 1.5s | **7x** |
-| 81³ | 26s | 2.1s | **12x** |
-| 201³ | 438s | 21s | **21x** |
+| 61³ | 10s | 1.5s | 7x |
+| 81³ | 26s | 2.1s | 12x |
+| 201³ | 438s | 21s | 21x |
 
-*Note: For small grids, CPU is faster due to GPU memory transfer overhead.*
+On small grids the CPU is faster, because overhead dominates the GPU run time.
 
-### Recommended Settings
+### Recommended settings
 
 For testing:
 ```python
 sim = LocalSymmetrizedSimulation(file, phase, dq=0.1, Q_size=3.0)  # Fast
 ```
 
-For publication-quality:
+For publication-quality results:
 ```python
 sim = LocalSymmetrizedSimulation(file, phase, dq=0.05, Q_size=5.5, use_gpu=True)
 ```
 
 ## Comparison with MATLAB
 
-This Python implementation produces results equivalent to the original MATLAB code. Key differences:
+This Python implementation is designed to reproduce the results of the original MATLAB code. The main implementation differences are:
 
 | Feature | MATLAB | Python |
 |---------|--------|--------|
@@ -267,17 +267,17 @@ This Python implementation produces results equivalent to the original MATLAB co
 
 If you use this code in your research, please cite:
 
-**Full citation:** Dubajic, M. et al. Dynamic nanodomains dictate macroscopic properties in lead halide perovskites. *Nat. Nanotechnol.* **20**, 755–763 (2025). https://doi.org/10.1038/s41565-025-01917-0
+Dubajic, M. et al. Dynamic nanodomains dictate macroscopic properties in lead halide perovskites. *Nat. Nanotechnol.* **20**, 755–763 (2025). https://doi.org/10.1038/s41565-025-01917-0
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License; see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome; please submit a pull request.
 
 ## Acknowledgments
 
 - Original MATLAB implementation by [dubajicmilos](https://github.com/dubajicmilos)
-- Structure factor calculations using [SingleCrystal](https://crystalmaker.com/singlecrystal/)
+- Structure factors calculated with [SingleCrystal](https://crystalmaker.com/singlecrystal/)
