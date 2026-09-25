@@ -23,7 +23,8 @@ def two_d_slice(
     plane : str
         Plane specification, e.g., 'HK1.5', 'H0.5L', '1.5KL'
     S : np.ndarray
-        3D intensity array
+        3D intensity array indexed as S[iH, iK, iL], the layout returned by
+        LocalSymmetrizedSimulation.simulate
     H, K, L : np.ndarray
         1D coordinate arrays
     log_mode : str, optional
@@ -34,7 +35,9 @@ def two_d_slice(
     Returns
     -------
     tuple
-        (X, Y, Z) - Coordinate arrays and intensity slice
+        (X, Y, Z) - Coordinate arrays and intensity slice. Z has shape
+        (len(Y), len(X)): Z[i, j] is the intensity at (X[j], Y[i]), so pass
+        Z.T to colormap_plot.
     """
     tol = 0.001
 
@@ -45,8 +48,7 @@ def two_d_slice(
         if len(indices) == 0:
             raise ValueError(f"No slice found at L={L_slice}")
         idx = indices[0]
-        Slice = S[:, idx, :]
-        Slice1 = Slice.reshape(len(K), len(H))
+        Slice1 = S[:, :, idx]
         X, Y, Z = K, H, Slice1
 
     elif plane.startswith('H') and not plane.startswith('HK'):
@@ -56,8 +58,7 @@ def two_d_slice(
         if len(indices) == 0:
             raise ValueError(f"No slice found at K={K_slice}")
         idx = indices[0]
-        Slice = S[idx, :, :]
-        Slice1 = Slice.reshape(len(L), len(H))
+        Slice1 = S[:, idx, :]
         X, Y, Z = L, H, Slice1
 
     else:
@@ -67,7 +68,7 @@ def two_d_slice(
         if len(indices) == 0:
             raise ValueError(f"No slice found at H={H_slice}")
         idx = indices[0]
-        Slice1 = S[:, :, idx]
+        Slice1 = S[idx, :, :].T
         X, Y, Z = K, L, Slice1
 
     if log_mode == 'log':
