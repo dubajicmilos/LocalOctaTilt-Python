@@ -41,7 +41,7 @@ def main():
 
     # Path to structure factor files
     base_path = os.path.dirname(os.path.abspath(__file__))
-    sf_path = os.path.join(base_path, 'LocalOctaTilt', 'Structure_Factor_Files')
+    sf_path = os.path.join(base_path, 'Structure_Factor_Files')
     output_path = base_path
 
     # =========================================================================
@@ -78,8 +78,8 @@ def main():
     print(f"  Simulation completed in {elapsed:.2f}s")
     print(f"  Grid size: {S_ma.shape}")
 
-    # Extract HK1.5 slice (actually 1.5KL in the notation)
-    plane = '1.5KL'
+    # Extract HK1.5 slice (HK plane at L = 1.5)
+    plane = 'HK1.5'
     X_ma, Y_ma, Z_ma = two_d_slice(plane, S_ma, H_ma, K_ma, L_ma, log_mode='lin')
 
     # Normalize
@@ -88,7 +88,7 @@ def main():
     # Plot and save
     fig1, ax1 = plt.subplots(figsize=(8, 8))
     colormap_plot(X_ma, Y_ma, Z_ma_norm.T, ax=ax1,
-                  labels={'xlabel': 'K [r.l.u.]', 'ylabel': 'L [r.l.u.]',
+                  labels={'xlabel': 'K [r.l.u.]', 'ylabel': 'H [r.l.u.]',
                          'title': 'MAPbBr3 - HK1.5 plane'},
                   clim=(0, 1))
     ax1.set_aspect('equal')
@@ -139,7 +139,7 @@ def main():
     # # Plot and save
     # fig2, ax2 = plt.subplots(figsize=(8, 8))
     # colormap_plot(X_fa, Y_fa, Z_fa_norm.T, ax=ax2,
-    #               labels={'xlabel': 'K [r.l.u.]', 'ylabel': 'L [r.l.u.]',
+    #               labels={'xlabel': 'K [r.l.u.]', 'ylabel': 'H [r.l.u.]',
     #                      'title': 'FAPbBr3 - HK1.5 plane'},
     #               clim=(0, 1))
     # ax2.set_aspect('equal')
@@ -159,13 +159,13 @@ def main():
     # fig3, axes = plt.subplots(1, 2, figsize=(14, 6))
 
     # colormap_plot(X_ma, Y_ma, Z_ma_norm.T, ax=axes[0],
-    #               labels={'xlabel': 'K [r.l.u.]', 'ylabel': 'L [r.l.u.]',
+    #               labels={'xlabel': 'K [r.l.u.]', 'ylabel': 'H [r.l.u.]',
     #                      'title': 'MAPbBr3 (I4/mcm)'},
     #               clim=(0, 1), show_colorbar=False)
     # axes[0].set_aspect('equal')
 
     # colormap_plot(X_fa, Y_fa, Z_fa_norm.T, ax=axes[1],
-    #               labels={'xlabel': 'K [r.l.u.]', 'ylabel': 'L [r.l.u.]',
+    #               labels={'xlabel': 'K [r.l.u.]', 'ylabel': 'H [r.l.u.]',
     #                      'title': 'FAPbBr3 (P4/mbm)'},
     #               clim=(0, 1))
     # axes[1].set_aspect('equal')

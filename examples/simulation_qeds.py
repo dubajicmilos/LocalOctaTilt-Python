@@ -27,7 +27,7 @@ from local_octa_tilt import (
 def main():
     # Path to structure factor files
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    sf_path = os.path.join(base_path, 'LocalOctaTilt', 'Structure_Factor_Files')
+    sf_path = os.path.join(base_path, 'Structure_Factor_Files')
 
     # =========================================================================
     # MAPbBr3 Simulation
@@ -53,7 +53,7 @@ def main():
         deltag=par_ma[4]
     )
 
-    # Extract 2D slice at L=1.5
+    # Extract 2D slice at H=1.5
     plane = '1.5KL'
     X_ma, Y_ma, Z_ma = two_d_slice(plane, S_ma, H_ma, K_ma, L_ma, log_mode='lin')
 

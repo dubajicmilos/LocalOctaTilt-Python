@@ -85,7 +85,7 @@ S, H, K, L = sim.simulate(
     deltag=params[4]
 )
 
-# Extract 2D slice at L=1.5
+# Extract 2D slice at H=1.5
 X, Y, Z = two_d_slice('1.5KL', S, H, K, L)
 
 # Plot
@@ -254,7 +254,7 @@ sim = LocalSymmetrizedSimulation(file, phase, dq=0.05, Q_size=5.5, use_gpu=True)
 
 ## Comparison with MATLAB
 
-This Python implementation is designed to reproduce the results of the original MATLAB code. The main implementation differences are:
+The simulation is designed to reproduce the S(q) computed by the original MATLAB code. The main implementation differences are:
 
 | Feature | MATLAB | Python |
 |---------|--------|--------|
